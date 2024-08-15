@@ -25,7 +25,11 @@ async function run() {
         const productsCollection = client.db('practiceDB').collection('Products')
 
 
-   
+        app.get('/products', async (req, res) => {
+            const result = await productsCollection.find().toArray()
+            res.send(result)
+        })
+
 
 
 
