@@ -26,7 +26,7 @@ async function run() {
 
 
         app.get('/products', async (req, res) => {
-            const result = await productsCollection.find().toArray()
+            const result = await productsCollection.find().sort({ date: -1 }).toArray()
             res.send(result)
         })
 
