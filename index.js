@@ -31,7 +31,10 @@ async function run() {
         })
 
 
-
+        app.get('/product-count', async (req, res) => {
+            const count = await productsCollection.countDocuments()
+            res.send({ count })
+        })
 
 
         // Send a ping to confirm a successful connection
