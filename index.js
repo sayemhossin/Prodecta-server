@@ -26,7 +26,12 @@ async function run() {
 
 
         app.get('/products', async (req, res) => {
-            const result = await productsCollection.find().sort({ date: -1 }).toArray()
+            const size = parseInt(req.query.size)
+            const page = parseInt(req.query.page) - 1
+            console.log('page:', page, size);
+            const result = await productsCollection.find().sort({ date: -1 }).skip(page * size)
+                .limit(size).toArray()
+
             res.send(result)
         })
 
