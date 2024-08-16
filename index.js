@@ -4,7 +4,13 @@ require('dotenv').config();
 const cors = require('cors');
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'https://prodecta-3aa53.web.app',
+        'https://prodecta-3aa53.firebaseapp.com'
+    ]
+}))
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -18,7 +24,7 @@ const client = new MongoClient(uri, {
     }
 });
 
-client.connect();
+// client.connect();
 
 const productsCollection = client.db('practiceDB').collection('Products');
 
@@ -39,7 +45,7 @@ app.get('/products', async (req, res) => {
             Product_Name: { $regex: search, $options: 'i' }
         };
     }
-    if(filter) query = {Category:filter}
+    if (filter) query = { Category: filter }
 
     if (!isNaN(minPrice) && !isNaN(maxPrice)) {
         query.Price = { $gte: minPrice, $lte: maxPrice };
