@@ -29,6 +29,8 @@ app.get('/products', async (req, res) => {
     const sort = req.query.sort || 'asc';
     const sortByDate = req.query.sortByDate === 'true';
     const filter = req.query.filter
+    const minPrice = parseFloat(req.query.minPrice) || 0;
+    const maxPrice = parseFloat(req.query.maxPrice) || Infinity;
 
 
     let query = {};
@@ -38,6 +40,10 @@ app.get('/products', async (req, res) => {
         };
     }
     if(filter) query = {Category:filter}
+
+    if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        query.Price = { $gte: minPrice, $lte: maxPrice };
+    }
 
     let sortOption = {};
     if (sortByDate) {
